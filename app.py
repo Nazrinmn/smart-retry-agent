@@ -249,7 +249,8 @@ st.sidebar.markdown(
 
 # ---------------------------------------------------------------------
 # KPIs
-# ---------------------------------------------------------------------total_failed = df["amount"].sum()
+# ---------------------------------------------------------------------
+total_failed = df["amount"].sum()
 total_txns = len(df)
 top_reason = df["failure_reason_code"].value_counts().idxmax()
 
