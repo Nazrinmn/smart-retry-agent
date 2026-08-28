@@ -7,7 +7,7 @@ customer messaging) to help recover lost revenue.
 
 Run locally:
     pip install -r requirements.txt
-    export ANTHROPIC_API_KEY="your-key-here"
+    export GEMINI_API_KEY="your-key-here"   # free key from aistudio.google.com/apikey
     streamlit run app.py
 """
 
@@ -17,7 +17,8 @@ import time
 import pandas as pd
 import streamlit as st
 import plotly.express as px
-from anthropic import Anthropic
+from google import genai
+from google.genai import types
 
 # ---------------------------------------------------------------------
 # Page config
@@ -113,7 +114,7 @@ def fallback_recommendation(row: dict) -> dict:
 
 
 # ---------------------------------------------------------------------
-# AI-powered recommendation (Claude)
+# AI-powered recommendation (Google Gemini — free tier)
 # ---------------------------------------------------------------------
 SYSTEM_PROMPT = """You are a payments recovery analyst for a fintech company.
 Given details of a single failed transaction, respond ONLY with a JSON object
@@ -130,7 +131,7 @@ Be concise and practical. Do not include any text outside the JSON object.
 
 
 def ai_recommendation(row: dict, api_key: str) -> dict:
-    client = Anthropic(api_key=api_key)
+    client = genai.Client(api_key=api_key)
     user_prompt = f"""Failed transaction details:
 - Amount: {row['amount']} {row['currency']}
 - Payment method: {row['payment_method']}
@@ -141,16 +142,15 @@ def ai_recommendation(row: dict, api_key: str) -> dict:
 
 Return the JSON recommendation now."""
 
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=400,
-        system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": user_prompt}],
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=user_prompt,
+        config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT),
     )
-    text = response.content[0].text.strip()
+    text = response.text.strip()
     text = text.replace("```json", "").replace("```", "").strip()
     result = json.loads(text)
-    result["source"] = "AI (Claude)"
+    result["source"] = "AI (Gemini 2.5 Flash)"
     return result
 
 
@@ -169,10 +169,11 @@ df = load_data()
 # ---------------------------------------------------------------------
 st.sidebar.title("⚙️ Settings")
 api_key_input = st.sidebar.text_input(
-    "Anthropic API Key (optional)",
-    value=os.environ.get("ANTHROPIC_API_KEY", ""),
+    "Google Gemini API Key (optional)",
+    value=os.environ.get("GEMINI_API_KEY", ""),
     type="password",
-    help="Leave blank to use the built-in rule-based engine instead of live AI calls.",
+    help="Free key from aistudio.google.com/apikey. Leave blank to use the "
+         "built-in rule-based engine instead of live AI calls.",
 )
 use_ai = st.sidebar.toggle("Use AI recommendations", value=bool(api_key_input))
 st.sidebar.markdown("---")
