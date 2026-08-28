@@ -24,10 +24,73 @@ from google.genai import types
 # Page config
 # ---------------------------------------------------------------------
 st.set_page_config(
-    page_title="Smart Payment Retry Agent",
+    page_title="Smart Payment Retry Agent | Razorpay",
     page_icon="💳",
     layout="wide",
 )
+
+# ---------------------------------------------------------------------
+# Razorpay brand theme (navy #0C2451, dodger blue #3395FF, white)
+# ---------------------------------------------------------------------
+RAZORPAY_NAVY = "#0C2451"
+RAZORPAY_BLUE = "#3395FF"
+RAZORPAY_LIGHT = "#F8FAFC"
+
+st.markdown(f"""
+<style>
+    .stApp {{
+        background-color: {RAZORPAY_LIGHT};
+    }}
+    section[data-testid="stSidebar"] {{
+        background-color: {RAZORPAY_NAVY};
+    }}
+    section[data-testid="stSidebar"] * {{
+        color: white !important;
+    }}
+    h1, h2, h3 {{
+        color: {RAZORPAY_NAVY} !important;
+    }}
+    .stButton > button {{
+        background-color: {RAZORPAY_BLUE};
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+    }}
+    .stButton > button:hover {{
+        background-color: {RAZORPAY_NAVY};
+        color: white;
+    }}
+    div[data-testid="stMetric"] {{
+        background-color: white;
+        border: 1px solid #E2E8F0;
+        border-left: 4px solid {RAZORPAY_BLUE};
+        border-radius: 8px;
+        padding: 12px 16px;
+    }}
+    div[data-testid="stMetricValue"] {{
+        color: {RAZORPAY_NAVY};
+    }}
+    .stAlert {{
+        border-radius: 8px;
+    }}
+</style>
+""", unsafe_allow_html=True)
+
+# Header banner
+st.markdown(f"""
+<div style="background-color:{RAZORPAY_NAVY}; padding: 20px 28px; border-radius: 10px; margin-bottom: 20px;">
+    <div style="display:flex; align-items:center; gap: 14px;">
+        <span style="font-size: 32px;">💳</span>
+        <div>
+            <span style="color:white; font-size: 26px; font-weight: 700;">Smart Payment Retry Agent</span><br/>
+            <span style="color:{RAZORPAY_BLUE}; font-size: 13px; letter-spacing: 1px; font-weight: 600;">
+                RAZORPAY AI BUILDER INTERNSHIP 2026 · TRACK 3: AI REVENUE RECOVERY
+            </span>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # ---------------------------------------------------------------------
 # Rule-based fallback engine (used if no API key is provided)
@@ -180,16 +243,13 @@ st.sidebar.markdown("---")
 st.sidebar.markdown(
     "**About**\n\n"
     "Smart Payment Retry Agent analyzes failed transactions and recommends "
-    "the best retry timing and method to recover lost revenue."
+    "the best retry timing and method to recover lost revenue.\n\n"
+    "*Built for Razorpay — Outgrow Ordinary.*"
 )
 
 # ---------------------------------------------------------------------
-# Header + KPIs
-# ---------------------------------------------------------------------
-st.title("💳 Smart Payment Retry Agent")
-st.caption("AI-powered recovery recommendations for failed payments")
-
-total_failed = df["amount"].sum()
+# KPIs
+# ---------------------------------------------------------------------total_failed = df["amount"].sum()
 total_txns = len(df)
 top_reason = df["failure_reason_code"].value_counts().idxmax()
 
@@ -210,9 +270,10 @@ with chart_col1:
     reason_counts.columns = ["reason", "count"]
     fig1 = px.bar(
         reason_counts, x="reason", y="count",
-        title="Failures by Reason", color="reason",
+        title="Failures by Reason",
+        color_discrete_sequence=[RAZORPAY_BLUE] * len(reason_counts),
     )
-    fig1.update_layout(showlegend=False)
+    fig1.update_layout(showlegend=False, plot_bgcolor="white", paper_bgcolor="white")
     st.plotly_chart(fig1, use_container_width=True)
 
 with chart_col2:
@@ -221,7 +282,9 @@ with chart_col2:
     fig2 = px.pie(
         method_counts, names="method", values="count",
         title="Failures by Payment Method",
+        color_discrete_sequence=[RAZORPAY_NAVY, RAZORPAY_BLUE, "#7BB8FF", "#B8D9FF"],
     )
+    fig2.update_layout(paper_bgcolor="white")
     st.plotly_chart(fig2, use_container_width=True)
 
 st.markdown("---")
