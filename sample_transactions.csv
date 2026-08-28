@@ -1,0 +1,16 @@
+transaction_id,customer_id,amount,currency,payment_method,failure_reason_code,failure_message,timestamp,card_type,customer_history
+TXN10001,CUST501,2499,INR,card,insufficient_funds,"Your card has insufficient balance",2026-08-27 09:15:00,debit,repeat_customer
+TXN10002,CUST502,899,INR,upi,upi_timeout,"UPI request timed out",2026-08-27 10:02:00,,new_customer
+TXN10003,CUST503,15999,INR,card,card_expired,"Card has expired",2026-08-27 11:45:00,credit,repeat_customer
+TXN10004,CUST504,3499,INR,netbanking,bank_server_down,"Bank server not responding",2026-08-27 12:30:00,,repeat_customer
+TXN10005,CUST505,1299,INR,upi,insufficient_funds,"Insufficient balance in linked account",2026-08-27 13:10:00,,new_customer
+TXN10006,CUST506,5999,INR,card,do_not_honor,"Transaction declined by issuing bank",2026-08-27 14:22:00,credit,repeat_customer
+TXN10007,CUST507,799,INR,wallet,wallet_balance_low,"Wallet balance too low",2026-08-27 15:05:00,,new_customer
+TXN10008,CUST508,24999,INR,card,suspected_fraud,"Flagged as suspicious by risk engine",2026-08-27 16:40:00,credit,new_customer
+TXN10009,CUST509,1999,INR,upi,upi_timeout,"UPI app did not respond in time",2026-08-27 17:12:00,,repeat_customer
+TXN10010,CUST510,4599,INR,netbanking,session_expired,"User session expired during payment",2026-08-27 18:30:00,,new_customer
+TXN10011,CUST511,999,INR,card,insufficient_funds,"Card declined due to low balance",2026-08-28 08:05:00,debit,repeat_customer
+TXN10012,CUST512,3299,INR,card,card_expired,"Expired card used",2026-08-28 09:20:00,debit,new_customer
+TXN10013,CUST513,6499,INR,wallet,wallet_balance_low,"Insufficient wallet funds",2026-08-28 10:15:00,,repeat_customer
+TXN10014,CUST514,1899,INR,upi,bank_server_down,"UPI bank server unreachable",2026-08-28 11:00:00,,new_customer
+TXN10015,CUST515,8999,INR,card,do_not_honor,"Bank declined without reason code",2026-08-28 12:45:00,credit,repeat_customer
