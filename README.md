@@ -1,4 +1,4 @@
-# 💳 Smart Payment Retry Agent
+#  SMART PAYMENT RETRY AGENT
 
 **Razorpay AI Builder Internship 2026 — Track 3: AI Revenue Recovery**
 
