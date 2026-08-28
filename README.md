@@ -28,7 +28,7 @@ payment success rates without manual review of every failure.
 - A dataset of failed transactions (`sample_transactions.csv`) simulates
   real payment failure logs (insufficient funds, expired cards, bank
   timeouts, suspected fraud, etc.)
-- Each transaction is passed to **Claude (Anthropic API)** with a prompt
+- Each transaction is passed to **Google Gemini (free tier)** with a prompt
   that asks it to classify the failure and recommend a retry strategy
 - If no API key is provided, a **rule-based fallback engine** (built from
   common payments-industry retry heuristics) still produces a full
@@ -39,7 +39,7 @@ payment success rates without manual review of every failure.
 ## Tech stack
 
 - **Frontend/App**: Streamlit
-- **AI**: Anthropic Claude API (`claude-sonnet-4-6`)
+- **AI**: Google Gemini API (`gemini-2.5-flash`, free tier)
 - **Data**: Pandas + a mock CSV dataset
 - **Charts**: Plotly
 
@@ -51,8 +51,9 @@ cd smart-retry-agent
 pip install -r requirements.txt
 
 # optional — enables live AI calls; without it, the app uses the
-# rule-based fallback engine automatically
-export ANTHROPIC_API_KEY="your-key-here"
+# rule-based fallback engine automatically.
+# Get a free key (no credit card) at https://aistudio.google.com/apikey
+export GEMINI_API_KEY="your-key-here"
 
 streamlit run app.py
 ```
@@ -65,7 +66,8 @@ The app opens at `http://localhost:8501`. Select any transaction and click
 1. Push this folder to a GitHub repo
 2. Go to [share.streamlit.io](https://share.streamlit.io), sign in with GitHub
 3. Click "New app", pick the repo, set main file to `app.py`
-4. (Optional) Add `ANTHROPIC_API_KEY` under app Secrets
+4. (Optional) Add `GEMINI_API_KEY` under app Secrets — get a free key at
+   [aistudio.google.com/apikey](https://aistudio.google.com/apikey)
 5. Deploy — you'll get a public URL to demo and screen-record
 
 ## Future improvements
